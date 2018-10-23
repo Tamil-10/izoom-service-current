@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+D:\izoom-service\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2297192712.index
+2904745670.index
+2565535591.index
+1773621533.index
+2045084410.index
+403904821.index
+1080661950.index

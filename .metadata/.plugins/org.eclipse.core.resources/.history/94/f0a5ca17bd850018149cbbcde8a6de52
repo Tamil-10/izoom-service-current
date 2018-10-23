@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>IzoomUi</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body >
+  <app-root></app-root>
+   <script defer src="../assets/ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" defer src="../assets/cdn.igp.com/raw/upload/asset/passets/js/baseHomeJS-303.js"></script>
+    <script type="text/javascript" defer src="../assets/cdn.igp.com/raw/upload/asset/passets/js/commonJS-320.js"></script>
+    <script type="text/javascript" defer src="../assets/cdn.igp.com/raw/upload/asset/passets/js/homeJS-311.js"></script>
+</body>
+</html>

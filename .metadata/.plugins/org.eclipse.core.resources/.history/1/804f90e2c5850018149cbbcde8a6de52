@@ -1,0 +1,11 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+  scripts : [../ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js]
+})
+export class AppComponent {
+  title = 'app';
+}
