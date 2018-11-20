@@ -95,20 +95,38 @@ public class ProductDAO {
 		LOGGER.info("retrieveProductList exit");
 		return productList;
 	}
-	public List<Map<String, Object>> retrieveProductsByFilter(String filterId) {
+	public List<Map<String, Object>> retrieveProductsByFilter(String filterId, int count) {
 		LOGGER.info("retrieveProductsByFilter enter::");
 		/*Integer getFilter = Integer.parseInt(searchCriteria.getFilter());*/
-		LOGGER.info("filter value----------"+filterId);								
-		String retrieveProductsByFilterQuery = "select p.id \"id\", p.name \"name\", p.price \"price\", p.available_quantity \"available_quantity\", p.description \"description\", p.content \"content\", p.content_url \"content_url\", p.content_type \"content_type\", p.status \"status\", gta.gen_type_id \"gen_type_id\", pta.pro_type_id \"pro_type_id\" from gen_type_asc gta, pro_type_asc pta , product p where p.id = gta.pro_id and p.id = pta.pro_id and pta.pro_type_id=? and p.status=?";
+		LOGGER.info("filter value----------"+filterId);		
+		
+		if(count==1) {
+		String retrieveProductsByFilterQuery = "select p.id \"id\", p.name \"name\", p.price \"price\", p.available_quantity \"available_quantity\", p.description \"description\", p.content \"content\", p.content_url \"content_url\", p.content_type \"content_type\", p.status \"status\", pta.pro_type_id \"pro_type_id\" from  pro_type_asc pta , product p where p.id = pta.pro_id and pta.pro_type_id=? and p.status=?";
 		List<Map<String, Object>> productList = null;
 		try {
-			productList = jdbcTemplate.queryForList(retrieveProductsByFilterQuery, new Object[] { filterId, "Active" });			
+			productList = jdbcTemplate.queryForList(retrieveProductsByFilterQuery, new Object[] {filterId, "Active" });			
 		} catch (Exception e) {
 			System.out.println(e);
 			
 		}
-		LOGGER.info("retrieveProductsByFilter exit::" + productList);
+		LOGGER.info("retrieveProductsByFilter exit::"+productList);
 		return productList;
+		}
+		else {
+			String retrieveProductsByFilterQuery = "select p.id \"id\", p.name \"name\", p.price \"price\", p.available_quantity \"available_quantity\", p.description \"description\", p.content \"content\", p.content_url \"content_url\", p.content_type \"content_type\", p.status \"status\", gta.gen_type_id \"gen_type_id\", pta.pro_type_id \"pro_type_id\" from gen_type_asc gta, pro_type_asc pta , product p where p.id = gta.pro_id and p.id = pta.pro_id and pta.pro_type_id=? and p.status=?";
+			List<Map<String, Object>> productList = null;
+			try {
+				productList = jdbcTemplate.queryForList(retrieveProductsByFilterQuery, new Object[] {filterId, "Active" });			
+			} catch (Exception e) {
+				System.out.println(e);
+				
+			}
+			LOGGER.info("retrieveProductsByFilter exit::"+productList);
+			return productList;
+		}
+		
+		
+		
 	}		
 
 	public Product delete(Product product) throws Exception {

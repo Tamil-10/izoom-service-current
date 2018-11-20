@@ -1,6 +1,7 @@
 
 package com.izoom.izoomservice.product.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -134,10 +135,10 @@ public class ProductInstDAO {
 	
 	public List<Map<String, Object>> retrieveOrders(String userId) {
 		LOGGER.info("retrieveOrders enter::" + userId);
-		String prod_inst_sql = "select pi.id \"id\", pi.product_id \"product_id\", pi.quantity \"quantity\", pi.status \"status\", p.name \"name\",p.description \"description\", p.price \"price\",p.content \"content\",p.content_type \"content_type\" from product_inst pi, product p where pi.user_id=? and pi.status=? and pi.product_id= p.id";
+		String prod_inst_sql = "select pi.id \"id\", pi.product_id \"product_id\", pi.quantity \"quantity\", pi.order_id \"order_id\", pi.status \"status\", p.name \"name\",p.description \"description\", p.price \"price\",p.content \"content\",p.content_type \"content_type\" from product_inst pi, product p where pi.user_id=? and pi.product_id= p.id";
 		List<Map<String, Object>> result = null;
 		try {
-			result = jdbcTemplate.queryForList(prod_inst_sql, new Object[] { userId, "Ordered" });
+			result = jdbcTemplate.queryForList(prod_inst_sql, new Object[] { userId });
 		} catch (DataAccessException e) {
 			LOGGER.info("Data Not Found");
 			e.printStackTrace();
@@ -145,6 +146,64 @@ public class ProductInstDAO {
 		LOGGER.info("retrieveOrders exit::" + result);
 		return result;
 	}
+	public List<Map<String, Object>> retrieveAdminOrders() {
+		LOGGER.info("retrieveAdminOrders enter::" );
+		String prod_inst_sql = "select pi.product_id \"product_id\",  pi.order_id \"order_id\", pi.quantity \"quantity\", pi.status \"status\", pi.ordered_date \"ordered_date\", p.id \"id\", p.name \"name\",p.description \"description\", p.price \"price\",p.content \"content\",p.content_type \"content_type\"  from product_inst pi, product p  where  pi.status=? and pi.product_id= p.id";
+		List<Map<String, Object>> result = null;
+		try {
+			result = jdbcTemplate.queryForList(prod_inst_sql, new Object[] {  "Ordered" });
+			
+		} catch (DataAccessException e) {
+			LOGGER.info("Data Not Found");
+			e.printStackTrace();
+		}
+		LOGGER.info("retrieveAdminOrders exit::" + result);
+		return result;
+	}
+	
+	public List<Map<String, Object>> retrieveOrdersById(String orderId) {
+		LOGGER.info("retrieveOrdersById enter::" + orderId);
+		String prod_inst_sql = "select pi.id \"id\", pi.product_id \"product_id\", pi.order_id \"order_id\", pi.quantity \"quantity\", pi.status \"status\", p.name \"name\",p.description \"description\", p.price \"price\",p.content \"content\",p.content_type \"content_type\" from product_inst pi, product p where pi.order_id=?  and pi.product_id= p.id";
+		List<Map<String, Object>> result = null;
+		try {
+			result = jdbcTemplate.queryForList(prod_inst_sql, new Object[] { orderId });
+		} catch (DataAccessException e) {
+			LOGGER.info("Data Not Found");
+			e.printStackTrace();
+		}
+		LOGGER.info("retrieveOrdersById exit::" + result);
+		return result;
+	}
+	
+
+	public String updateStatus(List<Long> orderid, String status) throws Exception {
+		LOGGER.info("updateStatus enter");
+		try {
+			LOGGER.info("product_id::::" + orderid);
+			LOGGER.info("order size::::" + orderid.size());
+
+		
+		   
+		    	  String query = "update PRODUCT_INST set status=? where order_id=?";
+		          List<Object[]> inputList = new ArrayList<Object[]>();
+		          for(int i=0; i < orderid.size();i++){
+				    	LOGGER.info("type id---------"+orderid.get(i));
+				    
+		              Object[] tmp = {status, orderid.get(i)};
+		              inputList.add(tmp);
+		          }
+		    jdbcTemplate.batchUpdate(query, inputList); 		 					      		    
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("product id:::" + orderid);
+		LOGGER.info("updateStatus exit");
+		
+		return "success";
+		
+	}
+	
 	
 
 

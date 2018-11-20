@@ -116,4 +116,46 @@ public class ProductInstService {
 		LOGGER.info("retriveOrders exit");
 		return result;
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "retrieveAdminOrders")
+	public List<Map<String, Object>> retrieveAdminOrders() throws Exception {
+		LOGGER.info("retriveOrders enter");
+		List<Map<String, Object>> result = null;
+		try {
+			result = productInstDAO.retrieveAdminOrders();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("retriveOrders exit");
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "retrieveOrdersById/{orderId}")
+	public List<Map<String, Object>> retrieveOrdersById(@PathVariable(value = "orderId") String orderId) throws Exception {
+		LOGGER.info("retriveOrders enter");
+		List<Map<String, Object>> result = null;
+		try {
+			result = productInstDAO.retrieveOrdersById(orderId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("retriveOrders exit");
+		return result;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "updateStatus/{orderid}/{status}")
+	public String updateStatus(@PathVariable(value = "orderid") List<Long> orderid, @PathVariable(value = "status") String status) throws Exception {
+		LOGGER.info("updateStatus enter");
+		System.out.println("dsf"+orderid+status);
+		try {
+			 productInstDAO.updateStatus(orderid, status);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("updateStatus exit");
+		
+		return "String";
+	
+	}
+	
 }

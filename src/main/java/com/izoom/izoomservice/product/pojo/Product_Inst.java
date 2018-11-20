@@ -43,6 +43,16 @@ public class Product_Inst {
 	@Column(name = "ORDERED_DATE")
 	private Date ordered_date;
 
+	private String orderid;
+	
+	public String getOrderid() {
+		return orderid;
+	}
+
+	public void setOrderid(String orderid) {
+		this.orderid = orderid;
+	}
+
 	public Date getOrdered_date() {
 		return ordered_date;
 	}

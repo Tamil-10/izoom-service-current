@@ -103,13 +103,13 @@ public class ProductService {
 		return productList;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "retrieveProductsByFilter/{filterId}")
-	public List<Map<String, Object>> retrieveProductsByFilter(@PathVariable(value = "filterId") String filterId) throws Exception {
+	@RequestMapping(method = RequestMethod.GET, value = "retrieveProductsByFilter/{filterId}/{count}")
+	public List<Map<String, Object>> retrieveProductsByFilter(@PathVariable(value = "filterId") String filterId, @PathVariable(value = "count") int count) throws Exception {
 		LOGGER.info("retrieveProductsByFilter enter");
-		LOGGER.info("filterId enter"+filterId);
+		LOGGER.info("filterId enter"+filterId+"counte value"+count);
 		List<Map<String, Object>> productList = null;
 		try {
-			productList = productDAO.retrieveProductsByFilter(filterId);
+			productList = productDAO.retrieveProductsByFilter(filterId,count);
 		} catch (Exception e) {
 			System.out.println(e);			
 		}

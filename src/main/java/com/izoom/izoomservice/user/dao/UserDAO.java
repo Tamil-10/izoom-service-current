@@ -1,5 +1,7 @@
 package com.izoom.izoomservice.user.dao;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +13,14 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.izoom.izoomservice.product.pojo.Address;
 import com.izoom.izoomservice.user.dao.UserDAO;
 import com.izoom.izoomservice.user.pojo.User;
+import com.izoom.izoomservice.user.pojo.Videos;
+import com.izoom.izoomservice.user.pojo.Comments;
 import com.izoom.izoomservice.user.repository.UserRespositary;
+import com.izoom.izoomservice.user.repository.CommentRespositary;
+
 
 @Repository
 public class UserDAO {
@@ -21,6 +28,11 @@ public class UserDAO {
 	@Autowired
 	UserRespositary userRespository;
 
+	@Autowired
+	CommentRespositary commentRespository;
+
+	
+	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
@@ -55,7 +67,7 @@ public class UserDAO {
 	}
 
 	
-	
+
 	public String createSocialUser(User user) {
 		LOGGER.info("create Social User");
 		System.out.println("Socialname::" + user.getUsername());
@@ -132,12 +144,101 @@ public class UserDAO {
 	
 	
 	
+//	Get Video Details
+	public List<Videos> getVideos(Integer id) {
+		LOGGER.info("checkLogin enter.."+id );
+//		System.out.println("name::" + user.getUsername());
+
+		List<Videos> addressList = new ArrayList<>();		//String prod_inst_sql = "select YOUTUBE_LINK from  POST_VIDEOS where USER_ID=103";
+	//	int userid=103;
+		try {
+			
+		String addressSql = "select  * from POST_VIDEOS where USER_ID=103";
+			addressList.addAll((List<Videos>) jdbcTemplate.query(addressSql, (rs, rowNum) -> {
+				Videos poll = new Videos();
+				poll.setYoutube_link(rs.getString("YOUTUBE_LINK"));
+				poll.setUser_id(rs.getInt("USER_ID"));
+				poll.setId(rs.getLong("ID"));
+
+		
+				return poll;
+			}, new Object[] {  }));
+
+								
+		} catch (DataAccessException e) {
+			LOGGER.info("Data Not Found"+e);
+			
+		}
+		return addressList;
+		
+		}
+	
+	
+	
+	
+	
+
+	
+	public List<Map<String, Object>> getComments(String youtube_link) {
+		LOGGER.info("getOrderSummary enter::" + youtube_link);
+		String prod_inst_sql = "select name,comments from comment_section where youtube_link='"+youtube_link+"'";
+		List<Map<String, Object>> result = null;
+		try {
+			result = jdbcTemplate.queryForList(prod_inst_sql, new Object[] {});
+		} catch (DataAccessException e) {
+			LOGGER.info("Data Not Found");
+			e.printStackTrace();
+		}
+		LOGGER.info("getOrderSummary exit::" + result);
+		return result;
+	}
+	
+	
+	
+	public List<Map<String, Object>> getCommentCount(String youtube_link) {
+		LOGGER.info("getOrderSummary enter::" + youtube_link);
+		String prod_inst_sql = "select count(*) from comment_section where youtube_link='"+youtube_link+"'";
+		List<Map<String, Object>> result = null;
+		try {
+			result = jdbcTemplate.queryForList(prod_inst_sql, new Object[] {});
+		} catch (DataAccessException e) {
+			LOGGER.info("Data Not Found");
+			e.printStackTrace();
+		}
+		LOGGER.info("getOrderSummary exit::" + result);
+		return result;
+	}
+	
+	
+	
+//	Add New Comments
+	
+	public String createComment(Comments comment) {
+		LOGGER.info("create Social User");
+		System.out.println("Socialname::" + comment.getName());
+		/*String prod_inst_sql = "insert into COMMENT_SECTION (name,comments,youtube_link) VALUES('"+comment.getName()+"','"+comment.getComments()+"','"+comment.getYoutube_link()+"')";
+		
+		jdbcTemplate.queryForList(prod_inst_sql, new Object[] {});
+
+		
+	*/	
+		
+		
+		commentRespository.save(comment);
+		return "success";
+	
+	
+	
+	
+	}
+	
+	
+	
+	
+	
+	
+	
 }
 	
 	
-/*	public String createUser(User user) {
-		LOGGER.info("createUser enter");
-		System.out.println("name::" + user.getUsername());
-		productRespository.save(product);
-	public String createUser(User user)
-}*/
+

@@ -44,9 +44,6 @@ public class User {
 	@Column(name = "USERID")
 	private Number userid;
 	
-//	@Column(name = "STATUS")
-//	private String status;
-//	
 
 
 	public Long getId() {
